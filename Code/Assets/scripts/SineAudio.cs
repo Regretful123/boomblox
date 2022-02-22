@@ -1,39 +1,38 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource)), DisallowMultipleComponent]
+[RequireComponent(typeof(AudioLowPassFilter)), DisallowMultipleComponent]
 public class SineAudio : MonoBehaviour
 {
+    float samplerate = 48000;
+    float increment = 0;
+    float phase = 0;
+
     public int position = 0;
-    public int samplerate = 44100;
-    public float frequency = 440;
-    [SerializeField] internal AudioSource source;
-    AudioClip _clip;
+    public float frequency = 420f;
+    public float gain = 0.05f;
+    [SerializeField] internal AudioLowPassFilter lowPassFilter;
     
     void Start()
     {
-        _clip = AudioClip.Create( "SineWave",samplerate * 2, 1, samplerate, true, OnAudioRead, OnAudioSetPosition );
-        source = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+        if( lowPassFilter != null )
+            lowPassFilter = GetComponent<AudioLowPassFilter>() ?? gameObject.AddComponent<AudioLowPassFilter>();
 
-        source.clip = _clip; 
-        source.Play();   
+        samplerate = AudioSettings.outputSampleRate;   
     }
 
-    private void OnAudioSetPosition(int position)
+    private void OnAudioFilterRead(float[] data, int channels)
     {
-        this.position = position;
-    }
-
-    private void OnAudioRead(float[] data)
-    {
-        int count = 0;
-        while( count < data.Length )
+        increment = frequency * 2f * Mathf.PI / samplerate;
+        for( int i = 0; i < data.Length; ++i )
         {
-            data[count] = Mathf.Sin( 2 * Mathf.PI * frequency * position / samplerate );
-            position++;
-            count++;
+            phase += increment;
+            data[i] = gain * Mathf.Sin(phase);
+
+            if( channels == 2 )
+            {
+                data[i+1] = data[i];
+                i++;
+            }
         }
     }
 }

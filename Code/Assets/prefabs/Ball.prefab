@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 4155007191948738871}
   - component: {fileID: 6561745917893615381}
   - component: {fileID: 8925978758047584726}
-  - component: {fileID: 2275566480110977202}
-  - component: {fileID: 2862229228294908660}
+  - component: {fileID: 6950863344177493761}
+  - component: {fileID: 194184235179800546}
+  - component: {fileID: 1848666618269731155}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -112,7 +113,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!96 &8925978758047584726
@@ -222,7 +223,26 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 1
   m_Emitting: 1
---- !u!82 &2275566480110977202
+--- !u!114 &6950863344177493761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7257206661502260286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65fb7f40fb3dd164d857947afb84d048, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 0
+  frequency: 420
+  gain: 0.05
+  lowPassFilter: {fileID: 1848666618269731155}
+  _rb: {fileID: 6561745917893615381}
+  maxHertz: 2156
+  minHertz: 420
+--- !u!82 &194184235179800546
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -234,15 +254,15 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 12.747662
+  MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -318,19 +338,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2862229228294908660
-MonoBehaviour:
+--- !u!169 &1848666618269731155
+AudioLowPassFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7257206661502260286}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e35182f22d7c10548a5c9cb8f4263a3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  position: 0
-  samplerate: 90382
-  frequency: 500.51
-  _audio: {fileID: 2275566480110977202}
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.22727273
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

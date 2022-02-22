@@ -6,6 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
+
+[Serializable]
+public class UnityEventBool : UnityEvent<bool> { }
 
 [DisallowMultipleComponent]
 public class CameraController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -40,6 +44,8 @@ public class CameraController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] float rotationMax = 90;
     public float acceleration = 1f;
     public Action<float> OnPowerChanged;
+
+    public UnityEventBool OnFireEvent;
 
     bool overUIElements = false;
     
@@ -111,6 +117,7 @@ public class CameraController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             StartCoroutine( AdjustValue() );
         }
+        OnFireEvent?.Invoke(mouseFire);
     }
 
     IEnumerator AdjustValue()

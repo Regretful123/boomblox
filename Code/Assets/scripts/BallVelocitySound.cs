@@ -6,17 +6,19 @@ using UnityEngine;
 public class BallVelocitySound : SineAudio 
 {
 
-    Rigidbody _rb;
+    [SerializeField] Rigidbody _rb;
     Vector3 _currentVelocity;
     Vector3 _orgVelocity;
 
     public int maxHertz = 2156;
     public int minHertz = 420;
+    float percent = 0;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        _rb = GetComponent<Rigidbody>() ?? gameObject.AddComponent<Rigidbody>();
+        if( _rb != null )
+            _rb = GetComponent<Rigidbody>() ?? gameObject.AddComponent<Rigidbody>();
         _orgVelocity = _rb.velocity;    
     }
 
@@ -26,16 +28,21 @@ public class BallVelocitySound : SineAudio
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        float percent = ( _currentVelocity.sqrMagnitude / _orgVelocity.sqrMagnitude );
-        this.frequency = Mathf.Lerp( minHertz, maxHertz, percent );
-        this.source.volume = Mathf.Clamp01( percent );
+        percent += Time.deltaTime;
+        percent = Mathf.Clamp01( percent );
+        frequency = Mathf.Lerp( maxHertz, minHertz, percent );
+        if( percent >= 1f )
+        {
+            frequency = 0;
+            enabled = false;
+        }
     }
 
     public void Init( BallSoundData soundData )
     {
-        this.minHertz = soundData.minHertz;
-        this.maxHertz = soundData.maxHertz;
+        minHertz = soundData.minHertz;
+        maxHertz = soundData.maxHertz;
     }
 }
