@@ -15,8 +15,9 @@ public class BallVelocitySound : SineAudio
     float percent = 0;
 
     // Start is called before the first frame update
-    public void Start()
+    public override void Start()
     {
+        base.Start();
         if( _rb != null )
             _rb = GetComponent<Rigidbody>() ?? gameObject.AddComponent<Rigidbody>();
         _orgVelocity = _rb.velocity;    
@@ -32,7 +33,7 @@ public class BallVelocitySound : SineAudio
     {
         percent += Time.deltaTime;
         percent = Mathf.Clamp01( percent );
-        frequency = Mathf.Lerp( maxHertz, minHertz, percent );
+        frequency = Mathf.CeilToInt( Mathf.Lerp( maxHertz, minHertz, percent ) );
         if( percent >= 1f )
         {
             frequency = 0;

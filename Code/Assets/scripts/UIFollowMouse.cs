@@ -9,6 +9,7 @@ public class UIFollowMouse : MonoBehaviour
     Canvas _parentCanvas;
     RectTransform _rect;
     Camera _cam;
+    [SerializeField] bool hideCursor;
 
     void Start()
     {
@@ -16,6 +17,9 @@ public class UIFollowMouse : MonoBehaviour
         var c = GetComponentsInParent<Canvas>();
         _parentCanvas = c[c.Length - 1];
         _cam = Camera.main;
+
+        if( hideCursor )
+            Cursor.visible = false;
     }
 
     void FixedUpdate()
